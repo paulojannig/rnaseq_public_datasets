@@ -1,15 +1,4 @@
 # RNA-Seq Analysis Configuration
-#
-## Instructions:
-# 1. Set the `PROJECT_FOLDER` variable to the desired path for your working folder.
-# 2. Adjust the `SPECIES` variable to your target species: "mouse," "human," "pig," or "rat."
-# 3. Optionally, customize other parameters like `THREADN` for the number of threads.
-
-## Description:
-#- This configuration file sets variables for an RNA-Seq analysis pipeline.
-#- Specifies paths to essential files and folders, such as genome indices and annotation files.
-#- Determines the file format and type (single-end or paired-end) of RNA-Seq data.
-#- Provides default settings for commonly used species (mouse, human, rat).
 
 # Adjust the following variables:
 
