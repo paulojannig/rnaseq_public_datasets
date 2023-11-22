@@ -9,14 +9,14 @@ RNA-seq pipeline using shell scripts
 
 ## Pipelines description:
 
-## Pipeline 1: Analyzing home-made data
+### Pipeline 1: Analyzing home-made data (STAR)
 run with `./pipeline1.sh`
 
 - Quality control: FastQC and TrimGalore!
 - Genome alignment: STAR
 - Gene level counts: featureCounts
 
-## Pipeline 2: Analyzing public datasets
+### Pipeline 2: Analyzing public datasets (STAR)
 run with `./pipeline2.sh`
 
 - Download deposited Fastq files
@@ -24,10 +24,16 @@ run with `./pipeline2.sh`
 - Genome alignment: STAR
 - Gene level counts: featureCounts
 
-
-## Pipeline 2: Analyzing public datasets
+### Pipeline 2: Analyzing public datasets (Kallisto)
 run with `./pipeline3.sh`
 
 - Download deposited Fastq files
 - Quality control: FastQC and TrimGalore!
+- Pseudoalignment quantification: Kallisto
+
+### Pipeline 4: Analyzing home-made data (Kallisto)
+run with `./pipeline1.sh`
+
+- Quality control: FastQC and TrimGalore!
+- Genome alignment: STAR
 - Pseudoalignment quantification: Kallisto
