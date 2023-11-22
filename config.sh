@@ -47,7 +47,7 @@ RAT_ANNOTATION=
 RAT_RSEM_PREFIX=
 
 ## SPECIFIC TO PIPELINE2
-SRA_FILE="02_metadata/SraRunTable.txt" # if downloading public datasets
+SRA_FILE="01_metadata/SraRunTable_example.txt" # if downloading public datasets
 
 ## SPECIFIC TO .... (WORKING ON)
 SRC_DIR=${PROJECT_FOLDER}/source_directory # for Novogene or NGI data
