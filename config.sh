@@ -12,8 +12,8 @@
 #- Provides default settings for commonly used species (mouse, human, rat).
 
 # Adjust the following variables:
-## FOR ALL PIPELINES:
 
+## FOR ALL PIPELINES:
 PROJECT_FOLDER=~/path/to/your/project_folder ## Replace with the desired path to the working folder
 SPECIES=mouse # supports "mouse", "human", or "pig"
 THREADN=14 # define number of threads to use
