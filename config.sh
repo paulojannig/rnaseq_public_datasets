@@ -53,9 +53,6 @@ SRA_FILE="01_metadata/SraRunTable_example.txt" # if downloading public datasets
 SRC_DIR=${PROJECT_FOLDER}/source_directory # for Novogene or NGI data
 
 
-
-
-
 # DON'T CHANGE BELOW THIS POINT 
 ###########################################################################################
 for FILE in `ls ${PROJECT_FOLDER}/fastq* | sort -u`

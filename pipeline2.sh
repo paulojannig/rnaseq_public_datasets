@@ -4,7 +4,7 @@
 # Author: Paulo Jannig | https://github.com/paulojannig
 # Last Updated: 2023-11-21
 #
-# Pipeline 2: # Analyzing public datasets
+# Pipeline 2: Analyzing public datasets
 #     
 # DESCRIPTION:
 #   - Download deposited Fastq files

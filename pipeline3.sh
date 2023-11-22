@@ -9,8 +9,7 @@
 # DESCRIPTION:
 #   - Download deposited Fastq files
 #   - Quality control: FastQC and TrimGalore!
-#   - Genome alignment: STAR
-#   - Gene level counts: featureCounts
+#   - Pseudoalignment quantification: Kallisto
 #
 # REQUIREMENTS:
 # - python3 (>= v3.6)
@@ -20,10 +19,7 @@
 # - MultiQC
 # - Trim Galore!
 # - cutadapt
-# - STAR
-# - Samtools
-# - infer_experiment.py (RSeQC)
-# - featureCounts (from Subread package)
+# - Kallisto
 #
 # USAGE:
 #   1. Download the SraRunTable.txt using SRA Run Selector tool (https://www.ncbi.nlm.nih.gov/Traces/study/)
