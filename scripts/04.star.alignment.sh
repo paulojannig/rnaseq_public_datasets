@@ -48,6 +48,23 @@ echo "Experiment: ${EXPERIMENT_NAME}"
 echo "=========================================================================================="
 printf "\n"
 
+# Create list of fastq files (before trimming)
+echo "sample,fastq_1,fastq_2" > ${PROJECT_FOLDER}/01_metadata/sampleInfo.csv
+
+cd ${PROJECT_FOLDER}/fastq
+for FILE in `ls *${SUFFIX1} | sed "s/${SUFFIX1}//g" | sort -u`
+do
+FASTQ1=${FILE}${SUFFIX1}
+if [ $READ_TYPE = "PE" ]
+then
+  FASTQ2=${FILE}${SUFFIX2}
+else
+  FASTQ2=""
+fi
+echo "${FILE},${FASTQ1},${FASTQ2}" >> ${PROJECT_FOLDER}/01_metadata/sampleInfo.csv
+done
+
+# Create path to index and annotation files
 if [ $SPECIES = "mouse" ]
 then 
   STAR_INDEX=${MOUSE_STAR_INDEX}
@@ -223,7 +240,7 @@ printf "\n"
 echo " ==================== Creating MultiQC report ==================== " `date`
 multiqc \
   --force \
-  --filename "03.alignment.star.html"\
+  --filename "03.alignment.QC.star.html"\
   --title "${EXPERIMENT_NAME}" \
   --outdir ${PROJECT_FOLDER}/00_reports/ \
   ${PROJECT_FOLDER}/02_results/quality_control/star \

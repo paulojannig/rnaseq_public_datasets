@@ -95,7 +95,7 @@ mv ${PROJECT_FOLDER}/01_metadata/sampleInfo_temp.csv ${PROJECT_FOLDER}/01_metada
 echo " ==================== Creating MultiQC report ==================== " `date`
 multiqc \
   --force \
-  --filename "04.featureCounts.qc.html"\
+  --filename "04.featureCounts.QC.html"\
   --outdir ${PROJECT_FOLDER}/00_reports/ \
   ${PROJECT_FOLDER}/02_results/quality_control/trimgalore \
   ${PROJECT_FOLDER}/02_results/quality_control/star \

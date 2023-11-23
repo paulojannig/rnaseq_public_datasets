@@ -27,6 +27,7 @@
 # SETUP SCRIPT
 # ===========================================================================================
 source config.sh
+source fastq_info.sh
 
 # Name your experiment:
 EXPERIMENT_NAME="Trimming Fastq files"
@@ -70,6 +71,7 @@ then
 else
   echo "Number of files: $COUNTER"
 fi
+
 echo "=========================================================================================="
 printf "\n"
 
@@ -115,7 +117,7 @@ printf "\n"
 echo " ==================== Creating MultiQC report ==================== " `date`
 multiqc \
   --force \
-  --filename "02.trimming.html" \
+  --filename "02.post_trimming.QC.html" \
   --title "${EXPERIMENT_NAME}" \
   --outdir ${PROJECT_FOLDER}/00_reports/ \
   ${PROJECT_FOLDER}/02_results/quality_control/trimgalore

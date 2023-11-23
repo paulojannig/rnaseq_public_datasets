@@ -37,8 +37,9 @@
 #   4. Run this script using the command: ./main.sh
 #   
 #
-nohup ./scripts/00.sradownloader.sh
-nohup ./scripts/01.setup.environment.sh
+./scripts/01.setup.environment.sh
+./scripts/00.sradownloader.sh
+./scripts/merge_fastq.sh
 nohup ./scripts/02.fastqc.sh >> logs/log.01.fastqc.txt
 nohup ./scripts/03.trimgalore.sh >> logs/log.02.trimgalore.txt
 nohup ./scripts/04.star.alignment.sh >> logs/log.03.star.alignment.txt

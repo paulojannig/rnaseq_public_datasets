@@ -86,7 +86,7 @@ printf "\n"
 echo " ==================== Creating MultiQC report ==================== " `date`
 multiqc \
   --force \
-  --filename "01.fastqc.html" \
+  --filename "01.pre_trimming.QC.html" \
   --title "${EXPERIMENT_NAME}" \
   --outdir ${PROJECT_FOLDER}/00_reports/ \
   ${PROJECT_FOLDER}/02_results/quality_control/fastqc

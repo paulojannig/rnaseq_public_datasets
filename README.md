@@ -1,39 +1,19 @@
-# RNA-seq-pipeline
+# RNA-seq pipeline to analyse public datasets
 RNA-seq pipeline using shell scripts
 
-## Edit config.sh file
-1. Set the `PROJECT_FOLDER` variable to the desired path for your working folder.
-2. Adjust the `SPECIES` variable to your target species: "mouse," "human," "pig," or "rat."
-3. Optionally, customize other parameters like `THREADN` for the number of threads.
+## USAGE: 
+    1. Download the SraRunTable.txt using SRA Run Selector tool (https://www.ncbi.nlm.nih.gov/Traces/study/)
+        For example:
+            - go to https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA648376      	
+            - click on Metadata to download the SraRunTable.txt file containing all or selected samples
+            - Save the file 'SraRunTable.txt' to the directory ${PROJECT_FOLDER}/01_metadata
+            - Check 'SraRunTable.txt' to see if there are fastq files that belong to the same biological replicate. This files will have to be merged. For that, adjust parameters within "scripts/01.setup.environment.sh" (# To merge fastq files from multiple lanes...)
+   2. Change parameters in the `config.sh` file
+   4. Run this script using the command: `./main.sh`
 
+## Pipeline description:
 
-## Pipelines description:
-
-### Pipeline 1: Analyzing home-made data (STAR)
-run with `./pipeline1.sh`
-
+- Download deposited Fastq files: [sradownloader](https://github.com/s-andrews/sradownloader) 
 - Quality control: FastQC and TrimGalore!
 - Genome alignment: STAR
 - Gene level counts: featureCounts
-
-### Pipeline 2: Analyzing public datasets (STAR)
-run with `./pipeline2.sh`
-
-- Download deposited Fastq files
-- Quality control: FastQC and TrimGalore!
-- Genome alignment: STAR
-- Gene level counts: featureCounts
-
-### Pipeline 2: Analyzing public datasets (Kallisto)
-run with `./pipeline3.sh`
-
-- Download deposited Fastq files
-- Quality control: FastQC and TrimGalore!
-- Pseudoalignment quantification: Kallisto
-
-### Pipeline 4: Analyzing home-made data (Kallisto)
-run with `./pipeline1.sh`
-
-- Quality control: FastQC and TrimGalore!
-- Genome alignment: STAR
-- Pseudoalignment quantification: Kallisto
