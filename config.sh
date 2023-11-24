@@ -8,8 +8,8 @@ DATASET=PJ1_correia_muscle_nrtn_GSE155068 # Name your experimental folder (e.g. 
 SRA_FILE="SraRunTable_example_GSE155068.txt" # file name for SRA table saved within `dataset_table` folder (e.g. SraRunTable_example_GSE155068.txt)
 MULTIPLE_LANES=no # "yes" or "no" to merge fastq files from multiple lanes. If "yes", adjust `scripts/03.merge_fastq.sh` accordingly.
 SPECIES=mouse # supports "mouse", "human", "pig" and "rat"
-THREADN=1 # define number of threads to use
-TMP_DIR=~/tmp_folder ## Replace with the desired path to the working folder
+THREADN=16 # define number of threads to use
+TMP_DIR=/proj/ramuscleweakness-2024/tmp_folder ## Replace with the desired path to the working folder
 
 
 ## Check paths to index and annotation files ------------
