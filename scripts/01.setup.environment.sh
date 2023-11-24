@@ -16,28 +16,20 @@
 # - none
 #
 ###########################################################################################
-#
-# ===========================================================================================
-# Script starts here...
-# ===========================================================================================
-
 source config.sh
-source ./scripts/fastq_info.sh
+source ./scripts/project_info.sh
+#echo "setup"
+#echo "current path: "`pwd`
 
 # Create necessary directories for organization
-mkdir -p ${PROJECT_FOLDER}/00_reports
-mkdir -p ${PROJECT_FOLDER}/01_metadata
-mkdir -p ${PROJECT_FOLDER}/02_results
-mkdir -p ${PROJECT_FOLDER}/03_figures
-mkdir -p ${PROJECT_FOLDER}/04_supplements
-mkdir -p ${PROJECT_FOLDER}/logs
-
-
-echo $EXTENSION
-echo $FQ_FORMAT
-echo $FILE_TEST
-echo $SUFFIX1
-echo $SUFFIX2
-echo $READ_TYPE
-
-echo "Done!" `date`
+mkdir -p ${DATASET}/00_reports
+mkdir -p ${DATASET}/01_metadata
+mkdir -p ${DATASET}/02_results
+mkdir -p ${DATASET}/03_figures
+mkdir -p ${DATASET}/04_supplements
+mkdir -p ${DATASET}/logs
+cp dataset_table/${SRA_FILE} ${DATASET}/01_metadata/
+cp -r miscellaneous ${DATASET}/
+cp -r scripts/ ${DATASET}/
+cp config.sh ${DATASET}/
+cp main.sh ${DATASET}/

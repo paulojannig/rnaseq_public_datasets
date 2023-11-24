@@ -7,10 +7,6 @@
 # This script performs genome alignment for RNA-seq samples using STAR, 
 # generates quality control metrics with Samtools, and then a MultiQC report
 #
-# USAGE:
-# 1. Run the script using the command: 
-#   nohup ./04.star.alignment.sh >> ../logs/log.04.star.alignment.txt
-#
 # REQUIREMENTS:
 # - STAR
 # - Samtools
@@ -21,25 +17,19 @@
 #     Files stored in ${PROJECT_FOLDER}/02_results/trimgalore
 #
 ###########################################################################################
-
-# ===========================================================================================
-# SETUP SCRIPT
-# ===========================================================================================
 source config.sh
+source ./scripts/project_info.sh
 
-# Name your experiment:
 EXPERIMENT_NAME="STAR alignment RNA-seq"
 
-# ===========================================================================================
-# Script starts here...
-# ===========================================================================================
 # create dependencies ------------
-mkdir -p ${PROJECT_FOLDER}/02_results/bam
-mkdir -p ${PROJECT_FOLDER}/02_results/quality_control/star
-mkdir -p ${PROJECT_FOLDER}/02_results/quality_control/samtools
+mkdir -p ${DATASET}/02_results/bam
+mkdir -p ${DATASET}/02_results/quality_control/star
+mkdir -p ${DATASET}/02_results/quality_control/samtools
 
 mkdir -p ${TMP_DIR}/02_results/bam
-ln -s ${PROJECT_FOLDER}/02_results/trimgalore ${TMP_DIR}/02_results/trimgalore
+ln -s ${PIPELINE_DIR}/${DATASET}/02_results/trimgalore ${TMP_DIR}/02_results/trimgalore
+
 
 # Start logging ------------
 echo "=========================================================================================="
@@ -48,10 +38,11 @@ echo "Experiment: ${EXPERIMENT_NAME}"
 echo "=========================================================================================="
 printf "\n"
 
-# Create list of fastq files (before trimming)
-echo "sample,fastq_1,fastq_2" > ${PROJECT_FOLDER}/01_metadata/sampleInfo.csv
+cd ${DATASET}/fastq
 
-cd ${PROJECT_FOLDER}/fastq
+# Create list of fastq files (before trimming)
+echo "sample,fastq_1,fastq_2" > ../01_metadata/sampleInfo.csv
+
 for FILE in `ls *${SUFFIX1} | sed "s/${SUFFIX1}//g" | sort -u`
 do
 FASTQ1=${FILE}${SUFFIX1}
@@ -61,7 +52,7 @@ then
 else
   FASTQ2=""
 fi
-echo "${FILE},${FASTQ1},${FASTQ2}" >> ${PROJECT_FOLDER}/01_metadata/sampleInfo.csv
+echo "${FILE},${FASTQ1},${FASTQ2}" >> ../01_metadata/sampleInfo.csv
 done
 
 # Create path to index and annotation files
@@ -85,7 +76,6 @@ else
   echo "Unsupported species: $SPECIES"
   exit 1
 fi
-
 
 cd ${TMP_DIR}/02_results/trimgalore
 
@@ -220,31 +210,34 @@ echo " ==================== Samtools QC ==================== " `date`
 echo " creating index file... " `date`
 samtools index -@ ${THREADN} ${TMP_DIR}/02_results/bam/${FILE}*.bam
 echo " creating stats file... " `date`
-samtools stats -@ ${THREADN} ${TMP_DIR}/02_results/bam/${FILE}*.bam > ${PROJECT_FOLDER}/02_results/quality_control/samtools/${FILE}.bam.samtools.stats.txt
+samtools stats -@ ${THREADN} ${TMP_DIR}/02_results/bam/${FILE}*.bam > ${TMP_DIR}/02_results/quality_control/samtools/${FILE}.bam.samtools.stats.txt
 echo " creating idxstats file... " `date`
-samtools idxstats -@ ${THREADN} ${TMP_DIR}/02_results/bam/${FILE}*.bam > ${PROJECT_FOLDER}/02_results/quality_control/samtools/${FILE}.bam.samtools.idxstats.txt
+samtools idxstats -@ ${THREADN} ${TMP_DIR}/02_results/bam/${FILE}*.bam > ${TMP_DIR}/02_results/quality_control/samtools/${FILE}.bam.samtools.idxstats.txt
 echo " creating flagstat file... " `date`
-samtools flagstat -@ ${THREADN} ${TMP_DIR}/02_results/bam/${FILE}*.bam > ${PROJECT_FOLDER}/02_results/quality_control/samtools/${FILE}.bam.samtools.flagstat.txt
+samtools flagstat -@ ${THREADN} ${TMP_DIR}/02_results/bam/${FILE}*.bam > ${TMP_DIR}/02_results/quality_control/samtools/${FILE}.bam.samtools.flagstat.txt
 printf "\n"
 
 echo " ==================== Organizing files ==================== " `date`
 echo "Moving STAR logs to 02_results/quality_control/star" `date`
-rm ${TMP_DIR}/02_results/bam/${FILE}.Log.progress.out ${TMP_DIR}/02_results/bam/${FILE}.SJ.out.tab
-mv ${TMP_DIR}/02_results/bam/*Log* ${PROJECT_FOLDER}/02_results/quality_control/star
-echo "Moving BAM file to PROJECT_FOLDER/02_results/bam/" `date`
-mv ${TMP_DIR}/02_results/bam/* ${PROJECT_FOLDER}/02_results/bam/
+rm ${TMP_DIR}/02_results/bam/*.Log.progress.out ${TMP_DIR}/02_results/bam/*.SJ.out.tab
+mv ${TMP_DIR}/02_results/bam/*Log* ${PIPELINE_DIR}/${DATASET}/02_results/quality_control/star/
+
+echo "Moving BAM file to DATASET/02_results/bam/" `date`
+mv ${TMP_DIR}/02_results/bam/* ${PIPELINE_DIR}/${DATASET}/02_results/bam/
 rm ${TMP_DIR}/02_results/bam/*
+
 done
 printf "\n"
 
+cd ${PIPELINE_DIR}/${DATASET}
 echo " ==================== Creating MultiQC report ==================== " `date`
 multiqc \
   --force \
   --filename "03.alignment.QC.star.html"\
   --title "${EXPERIMENT_NAME}" \
-  --outdir ${PROJECT_FOLDER}/00_reports/ \
-  ${PROJECT_FOLDER}/02_results/quality_control/star \
-  ${PROJECT_FOLDER}/02_results/quality_control/samtools
+  --outdir 00_reports/ \
+  02_results/quality_control/star \
+  02_results/quality_control/samtools
 printf "\n"
 
 echo " =================================== Software versions =================================== "
@@ -253,8 +246,8 @@ echo "STAR version" `STAR --version`
 samtools --version 2>&1 | head -n 2 | sed '2s/Using //'
 printf "\n"
 echo "Versions printed on 00_reports/software_versions.txt"
-echo "STAR" `STAR --version` >> ${PROJECT_FOLDER}/00_reports/software_versions.txt
-samtools --version 2>&1 | head -n 2 | sed '2s/Using //' >> ${PROJECT_FOLDER}/00_reports/software_versions.txt
+echo "STAR" `STAR --version` >> 00_reports/software_versions.txt
+samtools --version 2>&1 | head -n 2 | sed '2s/Using //' >> 00_reports/software_versions.txt
 echo " ========================================================================================== "
 printf "\n"
 rm -r ${TMP_DIR}/
