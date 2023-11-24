@@ -8,6 +8,8 @@ RNA-seq pipeline using shell scripts
     ```bash
     git clone https://github.com/paulojannig/rnaseq_public_datasets.git
     cd rnaseq_public_datasets
+    chmod 755 *.sh
+    chmod 755 scripts/*.sh
     ```
 3. Download the SraRunTable.txt using SRA Run Selector tool (https://www.ncbi.nlm.nih.gov/Traces/study/). 
 
