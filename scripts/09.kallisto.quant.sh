@@ -144,4 +144,5 @@ echo "Versions printed on 00_reports/software_versions.txt"
 kallisto version >> ${DATASET}/00_reports/software_versions.txt
 echo " ========================================================================================== "
 printf "\n"
+printf "\n"
 echo "Done!" `date`
