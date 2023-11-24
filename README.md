@@ -36,4 +36,3 @@ RNA-seq pipeline using shell scripts
     - kallisto 0.46.1
 
 # References
-working on..
