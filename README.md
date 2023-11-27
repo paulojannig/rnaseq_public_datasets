@@ -24,7 +24,20 @@ RNA-seq pipeline using shell scripts
 ### UPPMAX
 If you are using [UPPMAX](https://www.uppmax.uu.se/), please update the Slurm parameters in the `uppmax_job.sh` script.
 
-Refer to the documentation [here](https://uppmax.github.io/uppmax_intro/slurm_intro.html#interactive-jobs) for instructions on submitting jobs to UPPMAX.
+Submit the job with:
+```bash
+sbatch uppmax_job.sh
+```
+
+Useful commands:
+```bash
+jobinfo -u <username> # check the queue
+ls -lrt slurm-* # to check the output slurm-.out files
+cat <slurm.filename> # to check output file for your job
+```
+
+Refer to the documentation [here](https://uppmax.github.io/uppmax_intro/slurm_intro.html#interactive-jobs) for more instructions on submitting jobs to UPPMAX.
+
 
 ## Pipeline description:
 
@@ -47,9 +60,18 @@ Refer to the documentation [here](https://uppmax.github.io/uppmax_intro/slurm_in
   - cutadapt
   - STAR
   - Samtools
-  - infer_experiment.py (RSeQC)
+  - infer_experiment.py (RSeQC) https://rseqc.sourceforge.net/#infer-experiment-py
   - featureCounts (from Subread package)
   - kallisto 0.46.1
 
 
 ## References
+- [FastQC](https://github.com/s-andrews/FastQC)
+- [MultiQC](https://github.com/ewels/MultiQC)
+- [Trim Galore!](https://github.com/FelixKrueger/TrimGalore)
+- [cutadapt](https://github.com/marcelm/cutadapt)
+- [STAR](https://github.com/alexdobin/STAR)
+- [samtools](https://github.com/samtools/)
+- [infer_experiment.py (RSeQC)](https://github.com/MonashBioinformaticsPlatform/RSeQC)
+- [featureCounts (Subread)](https://github.com/ShiLab-Bioinformatics/subread)
+- [kallisto](https://github.com/pachterlab/kallisto)
