@@ -19,6 +19,7 @@ source config.sh
 source ./scripts/project_info.sh
 
 EXPERIMENT_NAME="Inferring strandness of reads"
+ANNOTATION_BED=${ANNOTATION%.gtf}.bed
 
 # create dependencies ------------
 mkdir -p ${DATASET}/02_results/quality_control/infer_experiment
@@ -39,7 +40,7 @@ do
 echo "Sample: ${FILE}.bam"
 infer_experiment.py \
   -i ${FILE}.bam \
-  -r ${ANNOTATION}.bed > ../../02_results/quality_control/infer_experiment/${FILE}.infer_experiment.txt
+  -r ${ANNOTATION_BED} > ../../02_results/quality_control/infer_experiment/${FILE}.infer_experiment.txt
 printf "\n"
 
 fraction=$(tail -n 1 ../../02_results/quality_control/infer_experiment/${FILE}.infer_experiment.txt | rev | cut -c 1-6 | rev)
