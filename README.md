@@ -48,7 +48,7 @@ Refer to the documentation [here](https://uppmax.github.io/uppmax_intro/slurm_in
 - Pseudoalignment quantification: Kallisto
 
 ## Requirements
-  - Pre-built STAR index
+  - Pre-built STAR index (check `extra_scripts/build.star.index.sh`)
   - Pre-built Kallisto index
   - Annotation file (GTF and BED formats)
   - python3 (>= v3.6)
@@ -75,3 +75,9 @@ Refer to the documentation [here](https://uppmax.github.io/uppmax_intro/slurm_in
 - [infer_experiment.py (RSeQC)](https://github.com/MonashBioinformaticsPlatform/RSeQC)
 - [featureCounts (Subread)](https://github.com/ShiLab-Bioinformatics/subread)
 - [kallisto](https://github.com/pachterlab/kallisto)
+
+
+## To do ...
+- Kallisto index
+- coverage tracks (bigWig files)
+- DESeq2 scripts
