@@ -17,14 +17,15 @@ pwd -P
 
 # load software modules
 module load python/3.6.0
-module load bioinfo-tools FastQC/0.11.9
-module load bioinfo-tools MultiQC/1.12
-module load bioinfo-tools TrimGalore/0.6.1
-module load bioinfo-tools cutadapt/4.5
-module load bioinfo-tools samtools/1.10
-module load bioinfo-tools htslib/1.10
-module load bioinfo-tools star/2.7.11a
-module load bioinfo-tools subread/2.0.3
+module load bioinfo-tools
+module load FastQC/0.11.9
+module load MultiQC/1.12
+module load TrimGalore/0.6.1
+module load cutadapt/4.5
+module load samtools/1.10
+module load htslib/1.10
+module load star/2.7.11a
+module load subread/2.0.3
 
 # Run script
 ./main.sh
