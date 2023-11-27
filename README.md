@@ -21,6 +21,11 @@ RNA-seq pipeline using shell scripts
 5. Change parameters in the `config.sh` file
 6. Run this script using the command: `./main.sh`
 
+### UPPMAX
+If you are using [UPPMAX](https://www.uppmax.uu.se/), please update the Slurm parameters in the `uppmax_job.sh` script.
+
+Refer to the documentation [here](https://uppmax.github.io/uppmax_intro/slurm_intro.html#interactive-jobs) for instructions on submitting jobs to UPPMAX.
+
 ## Pipeline description:
 
 - Download deposited Fastq files: [sradownloader](https://github.com/s-andrews/sradownloader) 
@@ -45,5 +50,6 @@ RNA-seq pipeline using shell scripts
   - infer_experiment.py (RSeQC)
   - featureCounts (from Subread package)
   - kallisto 0.46.1
+
 
 ## References
