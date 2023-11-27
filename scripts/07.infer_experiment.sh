@@ -19,6 +19,26 @@ source config.sh
 source ./scripts/project_info.sh
 
 EXPERIMENT_NAME="Inferring strandness of reads"
+
+
+# retrieve path to annotation file
+if [ $SPECIES = "mouse" ]
+then 
+  ANNOTATION=${MOUSE_ANNOTATION}
+elif [ $SPECIES = "human" ]
+then
+  ANNOTATION=${HUMAN_ANNOTATION}
+elif [ $SPECIES = "pig" ]
+then
+  ANNOTATION=${PIG_ANNOTATION}
+elif [ $SPECIES = "rat" ]
+then
+  ANNOTATION=${RAT_ANNOTATION}
+else
+  echo "Unsupported species: $SPECIES"
+  exit 1
+fi
+
 ANNOTATION_BED=${ANNOTATION%.gtf}.bed
 
 # create dependencies ------------

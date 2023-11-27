@@ -55,7 +55,7 @@ fi
 echo "${FILE},${FASTQ1},${FASTQ2}" >> ../01_metadata/sampleInfo.csv
 done
 
-# Create path to index
+# retrieve path to index folder
 if [ $SPECIES = "mouse" ]
 then 
   STAR_INDEX=${MOUSE_STAR_INDEX}
