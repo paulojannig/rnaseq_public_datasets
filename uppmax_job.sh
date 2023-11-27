@@ -25,6 +25,7 @@ module load cutadapt/4.5
 module load samtools/1.10
 module load htslib/1.10
 module load star/2.7.11a
+module load rseqc/2.6.4
 module load subread/2.0.3
 
 # Run script

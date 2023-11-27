@@ -19,6 +19,24 @@ source ./scripts/project_info.sh
 
 EXPERIMENT_NAME="featureCounts"
 
+# retrieve path to annotation file
+if [ $SPECIES = "mouse" ]
+then 
+  ANNOTATION=${MOUSE_ANNOTATION}
+elif [ $SPECIES = "human" ]
+then
+  ANNOTATION=${HUMAN_ANNOTATION}
+elif [ $SPECIES = "pig" ]
+then
+  ANNOTATION=${PIG_ANNOTATION}
+elif [ $SPECIES = "rat" ]
+then
+  ANNOTATION=${RAT_ANNOTATION}
+else
+  echo "Unsupported species: $SPECIES"
+  exit 1
+fi
+
 # ===========================================================================================
 # Script starts here...
 # ===========================================================================================
@@ -35,9 +53,9 @@ echo "==========================================================================
 
 cd ${DATASET}
 
-# Assuming strandedness.csv contains columns: bam,fraction,strandness,htseq-count,featureCounts
+# Assuming strandedness.csv contains columns: bam,fraction,strandness,htseq_count,featureCounts
 # Loop through the strandness.csv file line by line
-while IFS=',' read -r bam fraction strandness htseq-count featureCounts; do
+while IFS=',' read -r bam fraction strandness htseq_count featureCounts; do
   # Determine ${STRANDNESS} based on the "featureCounts" value
   case "$featureCounts" in
     "0") STRANDNESS=0 ;;

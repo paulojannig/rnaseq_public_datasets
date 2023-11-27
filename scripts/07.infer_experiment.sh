@@ -50,7 +50,7 @@ echo "Experiment: ${EXPERIMENT_NAME}"
 echo "=========================================================================================="
 printf "\n"
 
-echo "bam,fraction,strandness,htseq-count,featureCounts" > ${DATASET}/02_results/quality_control/infer_experiment/strandness.csv
+echo "bam,fraction,strandness,htseq_count,featureCounts" > ${DATASET}/02_results/quality_control/infer_experiment/strandness.csv
 
 cd ${DATASET}/02_results/bam
 printf "\n"
@@ -87,7 +87,7 @@ echo "Creating strandness_interpretation.txt file .... "
 echo "
 ============================= Estimation of the strandness ===============================
 |----------------------|------------------|------------------|--------------------|-------------|----------------|
-| Library type         | Infer Experiment | TopHat           | HISAT              | htseq-count | featureCounts  |
+| Library type         | Infer Experiment | TopHat           | HISAT              | htseq_count | featureCounts  |
 |----------------------|------------------|------------------|--------------------|-------------|----------------|
 | Paired-End (PE) - SF | 1++,1–,2+-,2-+   | FR Second Strand | Second Strand F/FR | yes         | Forward (1)    |
 | PE - SR              | 1+-,1-+,2++,2–-  | FR First Strand  | First Strand R/RF  | reverse     | Reverse (2)    |
