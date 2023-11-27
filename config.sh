@@ -9,18 +9,19 @@ SRA_FILE="SraRunTable_example_GSE155068.txt" # file name for SRA table saved wit
 MULTIPLE_LANES=no # "yes" or "no" to merge fastq files from multiple lanes. If "yes", adjust `scripts/03.merge_fastq.sh` accordingly.
 SPECIES=mouse # supports "mouse", "human", "pig" and "rat"
 THREADN=16 # define number of threads to use
-TMP_DIR=/proj/ramuscleweakness-2024/tmp_folder ## Replace with the desired path to the working folder
+PROJECT_FOLDER=/proj/yourProjectFolder # Path to where you store genome files
+TMP_DIR=${PROJECT_FOLDER}/tmp_folder ## Replace with the desired path to the temporary folder
 
 
 ## Check paths to index and annotation files ------------
-MOUSE_STAR_INDEX=/shared/genome/mm10_grcm38/index/star_r149
-MOUSE_ANNOTATION=/shared/genome/mm10_grcm38/ensembl/Mus_musculus.GRCm38.102 # GTF and BED files with the same PREFIX
+MOUSE_STAR_INDEX=${PROJECT_FOLDER}/genomes/mouse/star_index_149 # Path to STAR index
+MOUSE_ANNOTATION=${PROJECT_FOLDER}/genomes/mouse/Mus_musculus.GRCm38.102.chr.gtf # GTF file
 
-HUMAN_STAR_INDEX=/shared/genome/grch38/star_149 
-HUMAN_ANNOTATION=/shared/genome/grch38/ensembl/Homo_sapiens.GRCh38.102 # GTF and BED files with the same PREFIX
+HUMAN_STAR_INDEX=${PROJECT_FOLDER}/genomes/human/star_149 # Path to STAR index
+HUMAN_ANNOTATION=${PROJECT_FOLDER}/genomes/human/Homo_sapiens.GRCh38.102.gtf # GTF file
 
-PIG_STAR_INDEX=
-PIG_ANNOTATION=/shared/genome/pig/ensembl/Sus_scrofa.Sscrofa11.1.106 # GTF and BED files with the same PREFIX
+PIG_STAR_INDEX=${PROJECT_FOLDER}/genomes/pig/star_r149 # Path to STAR index
+PIG_ANNOTATION=${PROJECT_FOLDER}/genomes/pig/Sus_scrofa.Sscrofa11.1.106.gtf # GTF file
 
-RAT_STAR_INDEX=
-RAT_ANNOTATION=
+RAT_STAR_INDEX=${PROJECT_FOLDER}/genomes/rat/star_r149
+RAT_ANNOTATION=${PROJECT_FOLDER}/genomes/rat/
