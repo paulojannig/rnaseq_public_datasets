@@ -54,7 +54,7 @@ while IFS=',' read -r bam fraction strandness htseq-count featureCounts; do
         -T ${THREADN} \
         -t exon \
         -s ${STRANDNESS} \
-        -a ${ANNOTATION}.gtf \
+        -a ${ANNOTATION} \
         -o 02_results/counts/featureCounts/${bam}.featureCounts.txt \
         02_results/bam/${bam}
     elif [ ${READ_TYPE} = "PE" ]
@@ -64,7 +64,7 @@ while IFS=',' read -r bam fraction strandness htseq-count featureCounts; do
         -B -C -t exon \
         -p --countReadPairs \
         -s ${STRANDNESS} \
-        -a ${ANNOTATION}.gtf \
+        -a ${ANNOTATION} \
         -o 02_results/counts/featureCounts/${bam}.featureCounts.txt \
         02_results/bam/${bam}
     else

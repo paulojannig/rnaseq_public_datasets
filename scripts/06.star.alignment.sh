@@ -55,23 +55,19 @@ fi
 echo "${FILE},${FASTQ1},${FASTQ2}" >> ../01_metadata/sampleInfo.csv
 done
 
-# Create path to index and annotation files
+# Create path to index
 if [ $SPECIES = "mouse" ]
 then 
   STAR_INDEX=${MOUSE_STAR_INDEX}
-  ANNOTATION=${MOUSE_ANNOTATION}
 elif [ $SPECIES = "human" ]
 then
   STAR_INDEX=${HUMAN_STAR_INDEX}
-  ANNOTATION=${HUMAN_ANNOTATION}
 elif [ $SPECIES = "pig" ]
 then
   STAR_INDEX=${PIG_STAR_INDEX}
-  ANNOTATION=${PIG_ANNOTATION}
 elif [ $SPECIES = "rat" ]
 then
   STAR_INDEX=${RAT_STAR_INDEX}
-  ANNOTATION=${RAT_ANNOTATION}
 else
   echo "Unsupported species: $SPECIES"
   exit 1
