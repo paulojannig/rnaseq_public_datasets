@@ -1,0 +1,426 @@
+---
+title: "featureCounts-DESeq2 gene level"
+subtitle: ""
+author: ""
+date: "`r paste('Last update:', format(Sys.time(), '%B %d, %Y'))`"
+output: 
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: false
+    toc_depth: 3
+    number_sections: true
+    theme: spacelab
+    highlight: default
+---
+
+# Description
+**Muscle-secreted neurturin couples fiber oxidative metabolism and slow motor neuron identity**
+
+Brief description of the dataset
+	In this study we evaluate the effects of muscle-derived neurturin on skeletal muscle innervation, metabolism, and performance.
+
+*GEO Dataset:* <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE155068" target="_blank" rel="noopener">GSE155068</a>
+
+*Overall design:* RNA-sequencing analysis of gastrocnemius muscles from muscle-specific NRTN transgenic mice (with NRTN expression driven by the human alpha-skeletal actin promoter) and wild-type littermates.
+
+*Reference:*
+
+- Correia JC, Kelahmetoglu Y, Jannig PR, Schweingruber C, Shvaikovskaya D, Zhengye L, Cervenka I, Khan N, Stec M, Oliveira M, Nijssen J, Martínez-Redondo V, Ducommun S, Azzolini M, Lanner JT, Kleiner S, Hedlund E, Ruas JL. 2021. Muscle-secreted neurturin couples myofiber oxidative metabolism and slow motor neuron identity. Cell Metabolism 33:2215-2230.e8. <a href="https://doi.org/10.1016/j.cmet.2021.09.003" target="_blank" rel="noopener">Link</a>
+
+
+# Setup environment
+
+```{r, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+# define variables ==========================================
+filename_prefix <- "" # leave empty if not necessary
+species <- "mouse" # mouse, human, pig, rat
+ensembl_version <- 102 # define ensembl release version
+
+file_formats <- list(
+  #  "png",
+  "pdf"
+)
+
+# load libraries
+required_Packages_Install <- c(
+  "tidyverse",
+  "DT",
+  "DESeq2",
+  "vsn",
+  "biomaRt",
+  "RColorBrewer",
+  "ggrepel",
+  "pheatmap",
+  "readxl",
+  "writexl"
+)
+
+for (Package in required_Packages_Install) {
+  if (!require(Package, character.only = TRUE)) {
+    BiocManager::install(Package, dependencies = TRUE)
+  }
+  library(Package, character.only = TRUE)
+}
+
+# source custom functions
+source("load_functions.R") # source custom functions
+```
+
+Defined parameters
+```{r, echo = FALSE}
+cat("Filename prefix:", filename_prefix, "\n")
+cat("Species:", species, "\n")
+cat("Ensembl version:", ensembl_version, "\n")
+```
+
+# Data analysis
+
+## Metadata
+
+Read sample info column names:
+```{r}
+colnames(read.csv("../02_metadata/sampleInfo.csv",
+  header = TRUE
+))
+```
+
+Create metadata.csv:
+```{r}
+countsFolder <- "../01_results/counts/featureCounts"
+
+metadata <- read.csv("../02_metadata/sampleInfo.csv",
+    header = TRUE)
+```
+
+save metadata
+```{r}
+filename <- "metadata"
+write.csv(metadata, paste0(
+  "../02_metadata/",
+  filename_prefix,
+  filename, ".csv"
+),
+row.names = F, quote = F
+)
+
+saveRDS(metadata, paste0(
+  "../02_metadata/",
+  filename_prefix,
+  filename,
+  ".Rds"
+))
+```
+
+```{r echo=FALSE}
+cat("Saved file:", paste0(
+  "../02_metadata/",
+  filename_prefix,
+  filename, ".csv"
+))
+```
+
+### Metadata table
+```{r}
+filename <- "metadata"
+metadata %>% DT::datatable(
+  extensions = "Buttons",
+  options = list(
+    scrollX = TRUE,
+    pageLength = nrow(metadata),
+    dom = "Blfrtip",
+    buttons = list(
+      list(extend = "csv", filename = paste0(filename_prefix, filename)),
+      list(extend = "excel", filename = paste0(filename_prefix, filename))
+    )
+  )
+)
+```
+
+## DESeq2
+Full rank with paired subjects
+object construction
+```{r}
+dds <- DESeqDataSetFromFeatureCounts(metadata,
+  countsFolder,
+  design = ~ group
+)
+dds <- estimateSizeFactors(dds)
+nrow(dds)
+table(rowSums(assay(dds, "counts")) == 0)
+```
+
+filter low counts
+```{r}
+# # Option 1
+# dds <- dds[rowSums(counts(dds, normalized=TRUE)) >= 1, ] ## remove genes with zero normalized counts
+# dim(dds)
+#
+# # Option 2
+# dds <- dds[rowSums(counts(dds, normalized=TRUE) >= 10), ] ## remove genes with less than 10 normalized counts across all samples
+# dim(dds)
+#
+# # Option 3
+# dds <- dds[rowSums(counts(dds, normalized=TRUE) >= 5 ) >= 3] ## remove genes where less than 3 samples with normalized counts greater than or equal to 5.
+# dim(dds)
+
+# Option 4
+smallestGroupSize <- metadata %>%
+  dplyr::group_by(group) %>%
+  dplyr::summarise(samples = dplyr::n()) %>%
+  pull(samples) %>%
+  min()
+dds <- dds[rowSums(counts(dds, normalized = TRUE) >= 1) >= smallestGroupSize, ] ## remove genes where less than X samples (smallestGroupSize) with normalized counts greater than or equal to 1.
+dim(dds)
+```
+
+Relevel
+```{r}
+levels(dds$group)
+dds$group <- factor(dds$group,
+  levels = c(
+    "WT",
+    "HSA-NRTN"
+  )
+)
+levels(dds$group)
+```
+
+Standard analysis
+```{r}
+dds <- DESeq(dds)
+```
+
+save dds file
+```{r}
+filename <- "dds"
+saveRDS(dds, file = paste0(
+  "../01_results/deseq2/",
+  filename_prefix,
+  filename, ".Rds"
+))
+```
+
+
+# Quality control plots
+
+## PCA plot 
+```{r, fig.width = 3, fig.height = 3, fig.align = "center"}
+palette_pca <- c("#1F78B4", "#E31A1C", "#FDBF6F")
+
+pca <- plot_pca_deseq(dds,
+  palette = palette_pca,
+  plot_center = T,
+  group = "Group"
+) +
+  #coord_cartesian(xlim = c(-60, 30), expand = TRUE) +
+  ggtitle("**Principal component analysis**")
+pca
+```
+Save plot
+
+```{r}
+filename <- "PCA_plot"
+for (file_format in file_formats) {
+  ggsave_fixed(
+    paste0(
+      "../03_figures/",
+      filename_prefix,
+      filename, ".",
+      file_format
+    ),
+    units = "mm",
+    plot_width = 40,
+    plot_height = 40,
+    width = 60,
+    height = 60
+  )
+}
+```
+
+## PCA plot with labels
+```{r, fig.width = 3, fig.height = 3, fig.align = "center"}
+pca +
+  geom_text_repel(aes(label = name),
+    size = 5 / ggplot2:::.pt,
+    nudge_x = 1,
+    nudge_y = 0.2,
+    segment.colour = NA
+  )
+```
+
+```{r}
+# Save plot
+filename <- "PCA_plot_labels"
+
+for (file_format in file_formats) {
+  ggsave_fixed(
+    paste0(
+      "../03_figures/",
+      filename_prefix,
+      filename, ".",
+      file_format
+    ),
+    units = "mm",
+    plot_width = 40,
+    plot_height = 40,
+    width = 60,
+    height = 60
+  )
+}
+```
+
+## Sample-to-sample distances
+```{r, fig.width = 6, fig.height = 6, fig.align = "center"}
+vsd <- vst(dds, blind = FALSE)
+sampleDists <- dist(t(assay(vsd)))
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) <- paste(vsd$Group, vsd$Patient, sep = " - ")
+colnames(sampleDistMatrix) <- NULL
+heatmap <- pheatmap::pheatmap(sampleDistMatrix,
+  clustering_distance_rows = sampleDists,
+  clustering_distance_cols = sampleDists,
+  show_rownames = T, show_colnames = T,
+  cellwidth = 6,
+  cellheight = 6,
+  treeheight_row = 10,
+  treeheight_col = 10,
+  fontsize = 6,
+  border_color = NA,
+  col = colorRampPalette(rev(brewer.pal(9, "Blues")))(255)
+)
+```
+
+```{r}
+# Save plot
+filename <- "sample_distances"
+for (file_format in file_formats) {
+  ggsave(
+    plot = heatmap,
+    paste0(
+      "../03_figures/",
+      filename_prefix,
+      filename, ".",
+      file_format
+    ),
+    units = "mm",
+    dpi = 300,
+    width = 3 * length(metadata$sample),
+    height = 3 * length(metadata$sample)
+  )
+}
+```
+
+# Normalized gene counts
+
+## biomaRt annotation
+retrieve gene ensembl annotation 
+```{r}
+annotation <- getBM(
+  filters = "ensembl_gene_id",
+  attributes = c(
+    "ensembl_gene_id",
+    symbol,
+    "chromosome_name",
+    "gene_biotype"
+  ),
+  values = rownames(dds),
+  mart = useEnsembl("ensembl",
+    dataset = dataset,
+    # mirror = "useast",
+    version = ensembl_version
+  )
+)
+```
+
+Save biomaRt annotation
+```{r}
+filename <- "biomart_annotation"
+write.csv(annotation, paste0(
+  "../01_results/deseq2/",
+  filename_prefix,
+  filename,
+  ".csv"
+),
+row.names = F, quote = F
+)
+
+saveRDS(annotation, paste0(
+  "../01_results/deseq2/",
+  filename_prefix,
+  filename,
+  ".Rds"
+))
+```
+
+## DESeq2 Normalized counts
+Create data frame for normalize counts
+```{r}
+normalized_counts <- annotation %>%
+  inner_join((data.frame(
+    counts(dds, normalized = TRUE)
+  ) %>%
+    rownames_to_column("ensembl_gene_id")), by = "ensembl_gene_id")
+```
+
+Save normalized counts
+```{r}
+filename <- "normalized_counts"
+write.csv(normalized_counts, paste0(
+  "../01_results/deseq2/",
+  filename_prefix,
+  filename,
+  ".csv"
+),
+row.names = F, quote = F
+)
+
+saveRDS(normalized_counts, paste0(
+  "../01_results/deseq2/",
+  filename_prefix,
+  filename,
+  ".Rds"
+))
+```
+
+
+```{r echo=FALSE}
+cat("Saved file :", paste0(
+  "../01_results/deseq2/",
+  filename_prefix,
+  filename,
+  ".csv"
+))
+```
+
+# Supplementary table
+```{r}
+filename <- "normalized_gene_counts"
+
+excel <- list(
+  normalized_counts = normalized_counts
+)
+
+write_xlsx(excel, paste0(
+  "../04_supplements/",
+  filename_prefix,
+  filename,
+  ".xlsx"
+))
+```
+
+
+# R session info
+```{r}
+utils:::print.sessionInfo(sessionInfo()[-8])
+```
+
+# References
+
+- Love MI, Huber W, Anders S. 2014. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol 15:550. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">Link</a>
+
+<a href="https://bioconductor.org/help/course-materials/2022/CSAMA/lab/2-tuesday/lab-03-rnaseq/rnaseqGene_CSAMA2022.html" target="_blank" rel="noopener">RNA-seq workflow: gene-level exploratory analysis and differential expression</a>
+
+<a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html" target="_blank" rel="noopener">Analyzing RNA-seq data with DESeq2</a>
