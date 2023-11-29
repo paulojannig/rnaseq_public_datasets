@@ -23,6 +23,13 @@ source ./scripts/project_info.sh
 
 EXPERIMENT_NAME="Trimming Fastq files"
 
+if [ $THREADN > 4 ]
+then 
+  THREADN=4
+else
+  THREADN=$THREADN
+fi
+
 # create dependencies ------------
 mkdir -p ${DATASET}/02_results/
 mkdir -p ${DATASET}/02_results/trimgalore
@@ -82,7 +89,7 @@ printf "\n"
 if [ $READ_TYPE = "PE" ]
 then 
   trim_galore \
-  --cores 4 \
+  --cores $THREADN \
   --output_dir ../02_results/trimgalore \
   --paired \
   --gzip \
@@ -91,7 +98,7 @@ then
   ${FILE}${SUFFIX2}
 else
   trim_galore \
-  --cores 4 \
+  --cores $THREADN \
   --output_dir ../02_results/trimgalore \
   --gzip \
   --fastqc_args "-o ../02_results/quality_control/trimgalore" \
