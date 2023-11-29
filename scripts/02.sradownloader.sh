@@ -27,8 +27,7 @@ cd ${DATASET}
 
 echo "================= Downloading Fastq files ================= " `date`
 printf "\n"
-sradownloader --outdir fastq --threads ${THREADN} 01_metadata/${SRA_FILE}
-# Run again in case of failed samples
+
 sradownloader --outdir fastq --threads ${THREADN} 01_metadata/${SRA_FILE}
 
 ls fastq
