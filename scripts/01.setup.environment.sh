@@ -18,8 +18,6 @@
 ###########################################################################################
 source config.sh
 source ./scripts/project_info.sh
-#echo "setup"
-#echo "current path: "`pwd`
 
 # Create necessary directories for organization
 mkdir -p ${DATASET}/00_reports
@@ -31,5 +29,4 @@ mkdir -p ${DATASET}/logs
 cp dataset_table/${SRA_FILE} ${DATASET}/01_metadata/
 cp -r miscellaneous ${DATASET}/
 cp -r scripts/ ${DATASET}/
-cp config.sh ${DATASET}/
-cp main.sh ${DATASET}/
+cp *.sh ${DATASET}/
