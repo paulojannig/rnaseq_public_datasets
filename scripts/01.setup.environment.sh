@@ -4,13 +4,7 @@
 # Author: Paulo Jannig | GitHub: https://github.com/paulojannig
 #
 # DESCRIPTION:
-# This script will setup your RNA-seq directory by:
-#   - creating subdirectories
-#   - moving fastq files to working directory
-#
-# USAGE:
-# 1. Run the script using the command: 
-#   sh 01.setup.environment.sh
+# This script will setup your RNA-seq
 #
 # REQUIREMENTS:
 # - none
