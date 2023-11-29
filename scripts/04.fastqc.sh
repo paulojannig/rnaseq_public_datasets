@@ -31,8 +31,6 @@ echo "==========================================================================
 printf "\n"
 
 cd ${DATASET}/fastq/
-#EXTENSION=$(ls | head -1 | sed 's/.*\.//')
-#FQ_FORMAT=$(ls | head -1 | cut -d'.' -f2)
 
 echo " ========================= Listing and counting fastq files =============================== "
 COUNTER=0
