@@ -80,8 +80,8 @@ else
     INDEX_FOLDER=${GENOME_FOLDER}/${SPECIES}/star_index_149
     mkdir -p ${INDEX_FOLDER}
 
-    #wget --continue ${FASTA_LINK} -P ${GENOME_FOLDER}/${SPECIES}/
-    #wget --continue ${GTF_LINK} -P ${GENOME_FOLDER}/${SPECIES}/
+    wget --continue ${FASTA_LINK} -P ${GENOME_FOLDER}/${SPECIES}/
+    wget --continue ${GTF_LINK} -P ${GENOME_FOLDER}/${SPECIES}/
     gunzip ${GENOME_FOLDER}/${SPECIES}/*.gz
 
     # Create STAR index
