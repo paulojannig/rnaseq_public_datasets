@@ -1,0 +1,101 @@
+---
+title: "Infer illumina instrument"
+subtitle: ""
+author: "Data analysis: Paulo Jannig | Karolinska Institutet"
+date: "`r paste('Last update:', format(Sys.time(), '%B %d, %Y'))`"
+output: 
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: false
+    toc_depth: 3
+    number_sections: true
+    theme: spacelab
+    highlight: default
+---
+
+# Description
+Infer the Illumina instrument used for sequencing based on the header information from FASTQ files.
+
+# Setup environment
+```{r, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+# load libraries
+required_Packages_Install <- c(
+  "tidyverse",
+  "ShortRead"
+)
+
+for (Package in required_Packages_Install) {
+  if (!require(Package, character.only = TRUE)) {
+    BiocManager::install(Package, dependencies = TRUE)
+  }
+  library(Package, character.only = TRUE)
+}
+```
+
+Define uncompressed fastq file(s)
+```{r}
+fastq_file <- c("*.fq")
+#fastq_file <- c("*.fastq")
+#fastq_file <- c("*.fastq")
+```
+
+```{r}
+data.frame(
+  file = system(paste0("ls *.fq"), intern = TRUE)
+) %>%
+  mutate(header = system(paste0("head *.fq"), intern = TRUE)[1]) %>%
+  mutate(instrument_ID = str_split(header, ":", simplify = TRUE)[, 3]) %>%
+  mutate(
+    instrument = case_when(
+      str_detect(instrument_ID, "^(BRB|BP[ACGL]|BNT)") ~ "iSeq_100",
+      str_detect(instrument_ID, "000H") ~ "MiniSeq",
+      str_detect(instrument_ID, "^[BCJKDG]") ~ "MiSeq",
+      str_detect(instrument_ID, "(A[FG]|BG)..$") ~ "NextSeq_500/550 ",
+      str_detect(instrument_ID, "M5$") ~ "NextSeq_1000/2000",
+      str_detect(instrument_ID, "HV$") ~ "NextSeq_2000",
+      str_detect(instrument_ID, "([AB]C|AN)..$") ~ "HiSeq_2500",
+      str_detect(instrument_ID, "BB..$") ~ "HiSeq_3000/4000",
+      str_detect(instrument_ID, "(AL|CC)..$") ~ "HiSeq_X",
+      str_detect(instrument_ID, "D[RS]..$|DM.$") ~ "NovaSeq_6000"
+    )
+  )
+```
+
+If you want to check several files:
+```{r}
+# Specify the path to your gzipped fastq files
+files_folder <- "geo_deposit/"
+
+fastq_files <- data.frame(
+  file = system(paste0("ls ", files_folder,"*.fq.gz"), intern = TRUE)
+) %>%
+  mutate(header = system(paste0("gzip -dc ", files_folder,"*.fq.gz | head "), intern = TRUE)[1]) %>%
+  mutate(instrument_ID = str_split(header, ":", simplify = TRUE)[, 3]) %>%
+  mutate(
+    instrument = case_when(
+      str_detect(instrument_ID, "^(BRB|BP[ACGL]|BNT)") ~ "iSeq_100",
+      str_detect(instrument_ID, "000H") ~ "MiniSeq",
+      str_detect(instrument_ID, "^[BCJKDG]") ~ "MiSeq",
+      str_detect(instrument_ID, "(A[FG]|BG)..$") ~ "NextSeq_500/550 ",
+      str_detect(instrument_ID, "M5$") ~ "NextSeq_1000/2000",
+      str_detect(instrument_ID, "HV$") ~ "NextSeq_2000",
+      str_detect(instrument_ID, "([AB]C|AN)..$") ~ "HiSeq_2500",
+      str_detect(instrument_ID, "BB..$") ~ "HiSeq_3000/4000",
+      str_detect(instrument_ID, "(AL|CC)..$") ~ "HiSeq_X",
+      str_detect(instrument_ID, "D[RS]..$|DM.$") ~ "NovaSeq_6000"
+    )
+  )
+```
+
+```{r}
+unique(fastq_files$instrument)
+```
+
+
+# R session info
+```{r}
+utils:::print.sessionInfo(sessionInfo()[-8])
+```
