@@ -11,10 +11,10 @@ RNA-seq pipeline using shell scripts
     chmod 755 *.sh
     chmod 755 scripts/*.sh
     ```
-3. Download the SraRunTable.txt using SRA Run Selector tool (https://www.ncbi.nlm.nih.gov/Traces/study/). 
+3. Download the SraRunTable.txt using the <a href="https://www.ncbi.nlm.nih.gov/Traces/study/" target="_blank" rel="noopener">SRA Run Selector tool</a>.
 
     <U>Example</U>:
-   - go to https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA648376
+   - Search for the BioProject PRJNA648376 <a href="https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA648376" target="_blank" rel="noopener">(https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA648376)</a>
    - click on Metadata to download the SraRunTable.txt file containing all or selected samples
    - Save the file 'SraRunTable.txt' into the directory `dataset_table/`
 4. Check 'SraRunTable.txt' to see if there are fastq files that belong to the same biological replicate. These files will need to be merged. To do that, adjust parameters within `scripts/03.merge_fastq.sh`
