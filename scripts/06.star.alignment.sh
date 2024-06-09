@@ -14,7 +14,7 @@
 #
 # INPUT:
 #   Fastq files after quality control with trimgalore
-#     Files stored in ${PROJECT_FOLDER}/02_results/trimgalore
+#     Files stored in ${DATASET}/02_results/trimgalore
 #
 ###########################################################################################
 source config.sh
