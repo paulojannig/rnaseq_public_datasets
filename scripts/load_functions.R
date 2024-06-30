@@ -1,3 +1,20 @@
+# load libraries
+required_Packages_Install <- c(
+  "tidyverse",
+  "DESeq2",
+  "viridis",
+  "egg",
+  "ggtext",
+  "scales"
+)
+
+for (Package in required_Packages_Install) {
+  if (!require(Package, character.only = TRUE)) {
+    BiocManager::install(Package, dependencies = TRUE)
+  }
+  library(Package, character.only = TRUE)
+}
+
 # attributes <- listAttributes(useMart("ensembl", dataset = "mmusculus_gene_ensembl"))
 if (species == "human") {
   dataset <- "hsapiens_gene_ensembl"
