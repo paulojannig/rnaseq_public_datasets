@@ -40,3 +40,4 @@
 "E2f"  "E2F"
 "g Protein Coupled" "G Protein-Coupled"
 "Ubiquitin Like" "Ubiquitin-like"
+"Ampk" "AMPK"
