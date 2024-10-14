@@ -23,9 +23,9 @@
 #   Transcriptome (cDNA) FASTA file: [Sus_scrofa.Sscrofa11.1.cdna.all.fa.gz](https://ftp.ensembl.org/pub/release-106/fasta/sus_scrofa/cdna/Sus_scrofa.Sscrofa11.1.cdna.all.fa.gz)
 #
 # Rat genome:
-#   Genome FASTA file: 
-#   GTF annotation file:
-#   Transcriptome (cDNA) FASTA file: 
+#   Genome FASTA file: [Rattus_norvegicus.mRatBN7.2.dna.primary_assembly.*.fa.gz](https://ftp.ensembl.org/pub/release-112/fasta/rattus_norvegicus/dna/Rattus_norvegicus.mRatBN7.2.dna.primary_assembly.*.fa.gz)
+#   GTF annotation file: [Rattus_norvegicus.mRatBN7.2.112.gtf.gz](https://ftp.ensembl.org/pub/release-112/gtf/rattus_norvegicus/Rattus_norvegicus.mRatBN7.2.112.gtf.gz) 
+#   Transcriptome (cDNA) FASTA file: [Rattus_norvegicus.mRatBN7.2.cdna.all.fa.gz](https://ftp.ensembl.org/pub/release-112/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.mRatBN7.2.cdna.all.fa.gz)
 #
 # REQUIREMENTS:
 # - STAR
