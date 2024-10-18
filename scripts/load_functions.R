@@ -15,7 +15,9 @@ for (Package in required_Packages_Install) {
   library(Package, character.only = TRUE)
 }
 
-# attributes <- listAttributes(useMart("ensembl", dataset = "mmusculus_gene_ensembl"))
+# datasets <- listDatasets(useEnsembl("ensembl", version = 112))
+# attributes <- listAttributes(useEnsembl("ensembl", dataset = "mmusculus_gene_ensembl", version = 102))
+
 if (species == "human") {
   dataset <- "hsapiens_gene_ensembl"
   symbol <- "hgnc_symbol"
@@ -24,14 +26,17 @@ if (species == "human") {
   dataset <- "mmusculus_gene_ensembl"
   symbol <- "mgi_symbol"
   organism <- "org.Mm.eg.db"
+} else if (species == "rat") {
+  dataset <- "rnorvegicus_gene_ensembl"
+  symbol <- "rgd_symbol"
+  organism <- "org.Rn.eg.db"
 } else if (species == "pig") {
   dataset <- "sscrofa_gene_ensembl"
   symbol <- "hgnc_symbol"
+  organism <- "org.Ss.eg.db"
 } else {
   stop("Error at defining species")
 }
-
-
 
 # DESeqDataSetFromFeatureCounts ==========================================
 # Check https://www.biostars.org/p/277316/#277350
