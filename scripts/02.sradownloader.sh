@@ -10,6 +10,9 @@
 # - python3 (>= v3.6)
 # - SRA toolkit https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit
 # - sradownloader https://github.com/s-andrews/sradownloader
+#       cd ~/github_resources
+#       git clone https://github.com/s-andrews/sradownloader.git
+#       export PATH=$PATH:$PWD/sradownloader
 #
 # USAGE: 
 #   - Download the SraRunTable.txt using SRA Run Selector tool (https://www.ncbi.nlm.nih.gov/Traces/study/)

@@ -8,7 +8,7 @@
 # runs FastQC on the trimmed files, and then creates a final MultiQC report
 #
 # REQUIREMENTS:
-# - Trim Galore!
+# - Trim Galore! - https://github.com/FelixKrueger/TrimGalore
 # - cutadapt
 # - FastQC
 # - MultiQC
