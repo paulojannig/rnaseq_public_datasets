@@ -7,7 +7,7 @@
 # featureCounts to obtain gene counts from the aligned reads.
 #
 # REQUIREMENTS:
-# - featureCounts (from Subread package)
+# - featureCounts (from Subread package) - conda install bioconda::subread
 #
 # INPUT:
 #   Bam files

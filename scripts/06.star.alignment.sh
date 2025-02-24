@@ -79,7 +79,7 @@ cd ${TMP_DIR}/02_results/trimgalore
 EXTENSION=$(ls | head -1 | sed 's/.*\.//')
 
 # Get the second part of the filename separated by a dot (FQ_FORMAT)
-FQ_FORMAT=$(ls | head -1 | cut -d'.' -f2)
+FQ_FORMAT=$(ls | head -1 | rev | cut -d '.' -f2 | rev)
 
 # Get the filename of the first file
 FILE_TEST=$(ls | head -1)

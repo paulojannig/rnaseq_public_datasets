@@ -4,10 +4,13 @@
 # Author: Paulo Jannig | https://github.com/paulojannig
 #     
 # DESCRIPTION:
-#   - Download deposited Fastq files
+#   - Download genome files
+#   - build STAR index
 #   - Quality control: FastQC and TrimGalore!
 #   - Genome alignment: STAR
 #   - Gene level counts: featureCounts
+#
+#   Run this script using the command: ./main.sh
 #
 # More details: README.md 
 #

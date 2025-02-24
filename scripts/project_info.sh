@@ -71,13 +71,13 @@ if [ -d "${DATASET}/fastq" ]; then
     fi
 
     # Determine if the file is paired-end ("PE") or single-end ("SE")
-    if [ -e ${FILE_TEST%%$SUFFIX1}${SUFFIX2} ]
+    if [ -e ${DATASET}/fastq/${FILE_TEST%%$SUFFIX1}${SUFFIX2} ]
     then
     READ_TYPE="PE"  # Paired-end data
     else
     READ_TYPE="SE"  # Single-end data
     fi
-
+echo "Read type: $READ_TYPE"
 else
     # Run your code here for the case when $DATASET/fastq does not exist
     #echo "$DATASET/fastq does not exist."
